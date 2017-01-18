@@ -9,9 +9,9 @@ using System.Data.SqlClient;
 namespace DoubleSourceBalance
 {
     class Controller
-    {        
-        private string[] sources;
-
+    {
+        private List<Source> sources;
+        private List<Balance> balances;
 
     }
 }
