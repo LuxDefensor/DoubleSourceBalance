@@ -9,11 +9,17 @@ using System.Windows.Forms;
 
 namespace DoubleSourceBalance
 {
-    public partial class Form1 : Form
+    public partial class formMain : Form
     {
-        public Form1()
+        public formMain()
         {
             InitializeComponent();
+            this.Load += FormMain_Load;
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
         }
     }
 }

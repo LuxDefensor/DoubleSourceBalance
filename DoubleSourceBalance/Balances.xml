@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<aggredator>
+	<datasources>
+		<source id="1" name="Piramida">		
+			<server>10.26.0.10</server>
+			<database>Piramida2000</database>
+			<user>sa</user>
+			<password>nyEe59Dv</password>
+		</source>
+		<source id="2" name="Energosphere">
+			<server>10.26.10.177</server>
+			<database>ASKUE_StavropolEnergo</database>
+			<user>sa</user>
+			<password>nyEe59Dv</password>
+		</source>
+	</datasources>
+	<balances>
+		<balance name="Баланс по Л-96">
+			<component sign="+1" side="in"  source="1" channel="17281"/>
+			<component sign="+1" side="out" source="1" channel="17282"/>
+			<component sign="+1" side="in"  source="2" channel="1216"/>
+			<component sign="+1" side="out" source="2" channel="1215"/>
+		</balance>
+	</balances>
+</aggredator>
