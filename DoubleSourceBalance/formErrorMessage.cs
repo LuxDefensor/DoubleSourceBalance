@@ -12,6 +12,7 @@ namespace DoubleSourceBalance
     public partial class formErrorMessage : Form
     {
         private bool hasDetails = false;
+        private bool visibleDetails = false;
 
         public formErrorMessage(string message) 
         {
@@ -23,7 +24,19 @@ namespace DoubleSourceBalance
 
         private void BtnDetails_Click(object sender, EventArgs e)
         {
-            this.Height = 373;
+            if (visibleDetails)
+            {
+                this.Height = 205;
+                btnDetails.Text = "Подробно";
+                visibleDetails = false;
+            }
+            else
+            {
+                this.Height = 373;
+                btnDetails.Text = "Скрыть";
+                visibleDetails = true;
+            }
+
         }
 
         private void FormErrorMessage_Load(object sender, EventArgs e)

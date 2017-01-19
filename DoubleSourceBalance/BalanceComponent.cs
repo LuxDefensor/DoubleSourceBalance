@@ -11,20 +11,38 @@ namespace DoubleSourceBalance
         OUT
     }
 
+    public enum CalculateMethods
+    {
+        interval,
+        integral
+    }
+
     struct BalanceComponent
     {
         private string sign;
         private BalanceSides side;
-        private string source;
+        private Source source;
         private string channel;
+        private CalculateMethods method;
 
-        public BalanceComponent(string sign,BalanceSides side,string source,string channel)
+        public BalanceComponent(string sign, BalanceSides side, 
+            Source source, string channel, CalculateMethods method)
         {
             this.sign = sign;
             this.side = side;
             this.source = source;
             this.channel = channel;
+            this.method = method;
         }
+
+        public CalculateMethods Method
+        {
+        get
+            {
+                return method;
+            }
+        }
+
         public string Sign
         {
             get
@@ -41,7 +59,7 @@ namespace DoubleSourceBalance
             }
         }
 
-        public string Source
+        public Source Source
         {
             get
             {
@@ -54,6 +72,14 @@ namespace DoubleSourceBalance
             get
             {
                 return channel;
+            }
+        }
+
+        public string Name
+        {
+        get
+            {
+                return DataProvider.ChannelName(source, channel);
             }
         }
     }

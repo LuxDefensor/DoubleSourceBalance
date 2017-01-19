@@ -23,12 +23,17 @@ namespace DoubleSourceBalance
             }
         }
 
-        internal List<BalanceComponent> Components
+        public List<BalanceComponent> Components
         {
             get
             {
                 return new List<BalanceComponent>(components);
             }
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 }

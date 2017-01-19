@@ -12,14 +12,16 @@ namespace DoubleSourceBalance
         private string user;
         private string password;
         private string id;
+        private string sql;
 
-        public Source(string id,string server,string database,string user,string password)
+        public Source(string id, string server, string database, string user, string password, string sql)
         {
             this.id = id;
             this.server = server;
             this.database = database;
             this.user = user;
             this.password = password;
+            this.sql = sql;
         }
 
         public string Server
@@ -59,6 +61,14 @@ namespace DoubleSourceBalance
             get
             {
                 return id;
+            }
+        }
+
+        public string SQL
+        {
+        get
+            {
+                return sql;
             }
         }
     }

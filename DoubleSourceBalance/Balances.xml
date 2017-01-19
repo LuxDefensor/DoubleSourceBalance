@@ -2,24 +2,31 @@
 <aggredator>
 	<datasources>
 		<source id="1" name="Piramida">		
-			<server>10.26.0.10</server>
+			<server>localhost</server>
 			<database>Piramida2000</database>
 			<user>sa</user>
 			<password>nyEe59Dv</password>
+      <component>select devices.name + ' ' + sensors.name from sensors inner join devices on sensors.stationid=devices.id where sensors.id={x}</component>
 		</source>
 		<source id="2" name="Energosphere">
-			<server>10.26.10.177</server>
+			<server>localhost</server>
 			<database>ASKUE_StavropolEnergo</database>
 			<user>sa</user>
 			<password>nyEe59Dv</password>
+      <component>select dbo.zzz_GetPS(points.ID_Point)+' ' +points.PointName from Points where ID_Point=dbo.PP_ID_Point({x})</component>
 		</source>
 	</datasources>
 	<balances>
 		<balance name="Баланс по Л-96">
-			<component sign="+1" side="in"  source="1" channel="17281"/>
-			<component sign="+1" side="out" source="1" channel="17282"/>
-			<component sign="+1" side="in"  source="2" channel="1216"/>
-			<component sign="+1" side="out" source="2" channel="1215"/>
+			<component sign="+1" side="IN"  source="1" channel="17281" method="получасовки"/>
+			<component sign="+1" side="OUT" source="1" channel="17282" method="получасовки"/>
+			<component sign="+1" side="IN"  source="2" channel="2928" method="получасовки"/>
+			<component sign="+1" side="OUT" source="2" channel="2929" method="получасовки"/>
 		</balance>
+    <balance name="Баланс по ПС Затеречная (по СШ 110/35 кВ)">
+      <component sign="+1" side="IN"  source="1" channel="234" method="показания"/>
+      <component sign="-1" side="IN"  source="1" channel="238" method="показания"/>
+    
+    </balance>
 	</balances>
 </aggredator>

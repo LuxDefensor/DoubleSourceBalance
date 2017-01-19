@@ -42,8 +42,10 @@
             this.txtMessage.Location = new System.Drawing.Point(12, 12);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
+            this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtMessage.Size = new System.Drawing.Size(506, 108);
             this.txtMessage.TabIndex = 0;
+            this.txtMessage.TabStop = false;
             // 
             // btnDetails
             // 
@@ -72,8 +74,10 @@
             this.txtDetails.Location = new System.Drawing.Point(12, 175);
             this.txtDetails.Multiline = true;
             this.txtDetails.Name = "txtDetails";
+            this.txtDetails.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtDetails.Size = new System.Drawing.Size(506, 147);
             this.txtDetails.TabIndex = 3;
+            this.txtDetails.TabStop = false;
             // 
             // formErrorMessage
             // 
