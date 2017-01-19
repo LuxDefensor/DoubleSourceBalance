@@ -24,9 +24,32 @@
 			<component sign="+1" side="OUT" source="2" channel="2929" method="получасовки"/>
 		</balance>
     <balance name="Баланс по ПС Затеречная (по СШ 110/35 кВ)">
-      <component sign="+1" side="IN"  source="1" channel="234" method="показания"/>
-      <component sign="-1" side="IN"  source="1" channel="238" method="показания"/>
-    
+      <component sign="+1" side="IN"  source="1" channel="234" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="238" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="242" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="246" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="18929" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="18941" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="18945" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="233" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="237" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="241" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="245" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="18928" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="18940" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="18944" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="4199" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="4203" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="4207" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="4211" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="4198" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="4202" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="4206" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="4210" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="12398" method="получасовки"/>
+      <component sign="+1" side="IN"  source="1" channel="12402" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="12397" method="получасовки"/>
+      <component sign="+1" side="OUT" source="1" channel="12401" method="получасовки"/>
     </balance>
 	</balances>
 </aggredator>
