@@ -22,7 +22,8 @@ namespace DoubleSourceBalance
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Ошибка при вычислении потребления по получасовкам из Пирамиды для канала " + channelID, ex);
+                    throw new Exception("Ошибка подключения к БД " + Environment.NewLine +
+                        "Connection string: " + cn.ConnectionString, ex);
                 }
                 SqlCommand cmd = cn.CreateCommand();
                 StringBuilder sql = new StringBuilder();
@@ -54,7 +55,7 @@ namespace DoubleSourceBalance
                 }
                 sql.Clear();
                 sql.Append("select sum(value0)/2 consumption from DATA ");
-                sql.AppendFormat("WHERE PARNUMBER = 12 AND OBJECT = {0} AND ITEM = {1}",
+                sql.AppendFormat("WHERE PARNUMBER = 12 AND OBJECT = {0} AND ITEM = {1} ",
                     objectCode, itemCode);
                 sql.AppendFormat("AND DATA_DATE Between '{0}' AND '{1}'",
                     dtStart.Date.AddMinutes(30).ToString("yyyyMMdd HH:mm"),
@@ -70,9 +71,9 @@ namespace DoubleSourceBalance
                         Environment.NewLine + ex.Message);
                 }
                 if (result == null || Convert.IsDBNull(result))
-                    throw new Exception("Запрос вернул пустое значение" +
-                        Environment.NewLine + cmd.CommandText);
-                return Convert.ToDouble(result);
+                    return 0;
+                else
+                    return Convert.ToDouble(result);
             }
         }
 
@@ -88,12 +89,11 @@ namespace DoubleSourceBalance
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Ошибка при вычислении потребления по получасовкам из Пирамиды для канала " + channelID, ex);
+                    throw new Exception("Ошибка подключения к БД " + Environment.NewLine +
+                        "Connection string: " + cn.ConnectionString, ex);
                 }
                 SqlCommand cmd = cn.CreateCommand();
                 StringBuilder sql = new StringBuilder();
-                string objectCode = "-1";
-                string itemCode = "-1";
                 sql.AppendLine("declare @objCode int");
                 sql.AppendLine("declare @itemCode int");
                 sql.AppendLine("declare @ktr float");
@@ -129,14 +129,142 @@ namespace DoubleSourceBalance
                         cmd.CommandText, ex);
                 }
                 if (result == null || Convert.IsDBNull(result))
-                    throw new Exception("Запрос вернул пустое значение: ",
-                        new Exception(cmd.CommandText));
-                return Convert.ToDouble(result);
+                    return 0;
+                else
+                    return Convert.ToDouble(result);
             }
         }
         #endregion
 
         #region Energosphere
+
+        private static double EnergosphereConsumptionIntegral(Source source,
+           string channelID, DateTime dtStart, DateTime dtEnd)
+        {
+            using (SqlConnection cn = new SqlConnection(ConnectionString(source)))
+            {
+                try
+                {
+                    cn.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ошибка подключения к БД " + Environment.NewLine +
+                        "Connection string: " + cn.ConnectionString, ex);
+                }
+                SqlCommand cmd = cn.CreateCommand();
+                StringBuilder sql = new StringBuilder();
+
+                // Find meter's channel and coefficient
+                sql.Append("select id_ref,coeff from SchemaContents ");
+                sql.AppendFormat("where RefIsPoint = 2 and ID_PP = {0} and '{1}' between DT1 and DT2",
+                    channelID, dtStart);
+                cmd.CommandText = sql.ToString();
+                SqlDataReader dr;
+                try
+                {
+                    dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Не удалось получить информацию о канале " + channelID + Environment.NewLine +
+                        "Source: " + source + Environment.NewLine + cmd.CommandText, ex);
+                }
+                int meterChannel;
+                double ktr;
+                if (dr.Read())
+                {
+                    if (dr[0] == null || Convert.IsDBNull(dr[0]))
+                        throw new Exception("Запрос вернул пустые значения",
+                                            new Exception(cmd.CommandText));
+                    if (dr[1] == null || Convert.IsDBNull(dr[1]))
+                        throw new Exception("Запрос вернул пустые значения",
+                                            new Exception(cmd.CommandText));
+                    meterChannel = Convert.ToInt32(dr[0]);
+                    ktr = Convert.ToDouble(dr[1]);
+                }
+                else
+                {
+                    throw new Exception("Запрос вернул пустой набор строк",
+                                        new Exception(cmd.CommandText));
+                }
+                if (!dr.IsClosed)
+                    dr.Close();
+                // Find starting fixed value
+                sql.Clear();
+                sql.AppendFormat("select sum(Val) consumption from PointNIs_On_Main_Stack where ID_PP={0} and DT ='{1}'",
+                                 meterChannel, dtStart.ToString("yyyyMMdd"));
+                cmd.CommandText = sql.ToString();
+                object objValue;
+                double firstValue, lastValue;
+                try
+                {
+                    objValue = cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ошибка выполнения запроса " + Environment.NewLine + cmd.CommandText, ex);
+                }
+                if (objValue == null || Convert.IsDBNull(objValue))
+                    return 0;
+                firstValue = Convert.ToDouble(objValue);
+
+                // Find ending fixed value
+                sql.Clear();
+                sql.AppendFormat("select sum(Val) consumption from PointNIs_On_Main_Stack where ID_PP={0} and DT ='{1}'",
+                                 meterChannel, dtEnd.ToString("yyyyMMdd"));
+                cmd.CommandText = sql.ToString();
+                try
+                {
+                    objValue = cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ошибка выполнения запроса " + Environment.NewLine + cmd.CommandText, ex);
+                }
+                if (objValue == null || Convert.IsDBNull(objValue))
+                    return 0;
+                lastValue = Convert.ToDouble(objValue);
+                return (lastValue - firstValue) * ktr;
+            }
+        }
+
+        private static double EnergosphereConsumptionInterval(Source source,
+          string channelID, DateTime dtStart, DateTime dtEnd)
+        {
+            object result;
+            using (SqlConnection cn = new SqlConnection(ConnectionString(source)))
+            {
+                try
+                {
+                    cn.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ошибка подключения к БД " + Environment.NewLine +
+                        "Connection string: " + cn.ConnectionString, ex);
+                }
+                SqlCommand cmd = cn.CreateCommand();
+                StringBuilder sql = new StringBuilder();               
+                sql.Append("select sum(m.Val) consumption from PointMains m ");
+                sql.AppendFormat("where m.ID_PP={0} ", channelID);
+                sql.AppendFormat("and dt between '{0}' and '{1}'",
+                    dtStart.ToString("yyyyMMdd"), dtEnd.AddMinutes(-30).ToString("yyyyMMdd HH:mm"));
+                cmd.CommandText = sql.ToString();
+                try
+                {
+                    result = cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ошибка выполнения запроса " + Environment.NewLine + cmd.CommandText, ex);
+                }
+                if (result == null || Convert.IsDBNull(result))
+                    throw new Exception("Запрос вернул пустое значение" +
+                        Environment.NewLine + cmd.CommandText);
+                return Convert.ToDouble(result);
+            }
+        }
 
         #endregion
 
@@ -148,6 +276,7 @@ namespace DoubleSourceBalance
             cs.InitialCatalog = source.Database;
             cs.UserID = source.User;
             cs.Password = source.Password;
+            cs.ConnectTimeout = 300;
             return cs.ConnectionString;
         }
 
@@ -219,14 +348,13 @@ namespace DoubleSourceBalance
                     break;
                 case "2":
                     switch (channel.Method)
-                    {
-                        //TODO: Change these methods to Energosphere
+                    {                        
                         case CalculateMethods.integral:
-                            result = PiramidaConsumptionIntegral(source, channel.Channel,
+                            result = EnergosphereConsumptionIntegral(source, channel.Channel,
                                 dtStart, dtEnd);
                             break;
                         case CalculateMethods.interval:
-                            result = PiramidaConsumptionInterval(source, channel.Channel,
+                            result = EnergosphereConsumptionInterval(source, channel.Channel,
                                 dtStart, dtEnd);
                             break;
                         default:

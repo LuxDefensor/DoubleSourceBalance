@@ -13,7 +13,7 @@ namespace DoubleSourceBalance
     {
         private Controller c;
         private Color BackIN = Color.LightGreen;
-        private Color BackOUT = Color.LightCoral;
+        private Color BackOUT = Color.Pink;
 
         public formMain()
         {
@@ -26,6 +26,7 @@ namespace DoubleSourceBalance
 
         private void BtnCalc_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             int leftRow = 2;
             int rightRow = 2;
             double totalIN = 0;
@@ -33,6 +34,7 @@ namespace DoubleSourceBalance
             double consumption = 0;
             if (lstBalances.SelectedIndex >= 0)
             {
+                dgvResult.Rows.Clear();
                 Balance b = c.Balances[lstBalances.SelectedIndex];
                 dgvResult.RowCount = Math.Max(
                     b.Components.Count(comp => comp.Side == BalanceSides.IN),
@@ -53,6 +55,7 @@ namespace DoubleSourceBalance
                                     ex.InnerException.Message :
                                     "No additional info"));
                         dlg.ShowDialog();
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                     switch (component.Side)
@@ -72,21 +75,26 @@ namespace DoubleSourceBalance
                             rightRow++;
                             break;
                     }
+                    dgvResult.Refresh();
                 }
                 dgvResult.Rows[1].DefaultCellStyle.Font =
                     new Font(dgvResult.DefaultCellStyle.Font, FontStyle.Bold);
                 dgvResult.Rows[1].Cells[0].Value = "ИТОГО:";
-                dgvResult.Rows[1].Cells[1].Value = totalIN;
-                dgvResult.Rows[2].Cells[1].Value = totalOUT;
+                dgvResult.Rows[1].Cells[1].Value = totalIN.ToString("N0",
+                    System.Globalization.CultureInfo.CurrentCulture.NumberFormat);
+                dgvResult.Rows[1].Cells[2].Value = totalOUT.ToString("N0",
+                    System.Globalization.CultureInfo.CurrentCulture.NumberFormat);
                 if (totalIN == 0 && totalOUT == 0)
                 {
                     formErrorMessage dlg = new formErrorMessage("Опреация: вычисление небаланса",
                             "На ноль делить нельзя!");
                     dlg.ShowDialog();
+                    this.Cursor = Cursors.Default;
                     return;
                 }
                 dgvResult.Rows[0].DefaultCellStyle.Font =
                     new Font(dgvResult.DefaultCellStyle.Font, FontStyle.Bold);
+                dgvResult.Rows[0].DefaultCellStyle.BackColor = dgvResult.DefaultCellStyle.BackColor;
                 dgvResult.Rows[0].Cells[0].Value = "Небаланс=";
                 double disbalance = Math.Abs(totalIN - totalOUT);
                 dgvResult.Rows[0].Cells[1].Value = disbalance.ToString("N0",
@@ -95,6 +103,7 @@ namespace DoubleSourceBalance
                 disbalance = 2 * disbalance / (totalIN + totalOUT);
                 dgvResult.Rows[0].Cells[2].Value = disbalance.ToString("P2",
                     System.Globalization.CultureInfo.CurrentCulture.NumberFormat);
+                this.Cursor = Cursors.Default;
             }
         }
 

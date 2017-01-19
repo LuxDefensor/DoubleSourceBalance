@@ -35,22 +35,22 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lstBalances = new System.Windows.Forms.ListBox();
             this.dgvComponents = new System.Windows.Forms.DataGridView();
+            this.Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CompName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Sign = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvResult = new System.Windows.Forms.DataGridView();
+            this.NameIN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ValueIN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ValueOUT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameOUT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnCalc = new System.Windows.Forms.Button();
             this.dtpTill = new System.Windows.Forms.DateTimePicker();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.NameIN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ValueIN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ValueOUT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameOUT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CompName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Sign = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvComponents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
@@ -110,6 +110,7 @@
             // 
             this.dgvComponents.AllowUserToAddRows = false;
             this.dgvComponents.AllowUserToDeleteRows = false;
+            this.dgvComponents.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -131,9 +132,43 @@
             this.dgvComponents.Name = "dgvComponents";
             this.dgvComponents.ReadOnly = true;
             this.dgvComponents.RowHeadersVisible = false;
-            this.dgvComponents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvComponents.Size = new System.Drawing.Size(466, 203);
             this.dgvComponents.TabIndex = 1;
+            this.dgvComponents.TabStop = false;
+            // 
+            // Code
+            // 
+            this.Code.HeaderText = "Код";
+            this.Code.Name = "Code";
+            this.Code.ReadOnly = true;
+            this.Code.Width = 50;
+            // 
+            // CompName
+            // 
+            this.CompName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.CompName.HeaderText = "Наименование";
+            this.CompName.Name = "CompName";
+            this.CompName.ReadOnly = true;
+            // 
+            // Method
+            // 
+            this.Method.HeaderText = "Расчёт по";
+            this.Method.Name = "Method";
+            this.Method.ReadOnly = true;
+            this.Method.Width = 120;
+            // 
+            // Group
+            // 
+            this.Group.HeaderText = "Группа";
+            this.Group.Name = "Group";
+            this.Group.ReadOnly = true;
+            // 
+            // Sign
+            // 
+            this.Sign.HeaderText = "Знак";
+            this.Sign.Name = "Sign";
+            this.Sign.ReadOnly = true;
+            this.Sign.Width = 80;
             // 
             // dgvResult
             // 
@@ -163,6 +198,36 @@
             this.dgvResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvResult.Size = new System.Drawing.Size(766, 204);
             this.dgvResult.TabIndex = 2;
+            // 
+            // NameIN
+            // 
+            this.NameIN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NameIN.FillWeight = 50F;
+            this.NameIN.HeaderText = "Наименование канала";
+            this.NameIN.Name = "NameIN";
+            this.NameIN.ReadOnly = true;
+            // 
+            // ValueIN
+            // 
+            this.ValueIN.HeaderText = "Приём";
+            this.ValueIN.Name = "ValueIN";
+            this.ValueIN.ReadOnly = true;
+            this.ValueIN.Width = 200;
+            // 
+            // ValueOUT
+            // 
+            this.ValueOUT.HeaderText = "Отдача";
+            this.ValueOUT.Name = "ValueOUT";
+            this.ValueOUT.ReadOnly = true;
+            this.ValueOUT.Width = 200;
+            // 
+            // NameOUT
+            // 
+            this.NameOUT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NameOUT.FillWeight = 50F;
+            this.NameOUT.HeaderText = "Наименование канала";
+            this.NameOUT.Name = "NameOUT";
+            this.NameOUT.ReadOnly = true;
             // 
             // panel1
             // 
@@ -219,70 +284,6 @@
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Период: с";
-            // 
-            // NameIN
-            // 
-            this.NameIN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NameIN.FillWeight = 50F;
-            this.NameIN.HeaderText = "Наименование канала";
-            this.NameIN.Name = "NameIN";
-            this.NameIN.ReadOnly = true;
-            // 
-            // ValueIN
-            // 
-            this.ValueIN.HeaderText = "Приём";
-            this.ValueIN.Name = "ValueIN";
-            this.ValueIN.ReadOnly = true;
-            this.ValueIN.Width = 200;
-            // 
-            // ValueOUT
-            // 
-            this.ValueOUT.HeaderText = "Отдача";
-            this.ValueOUT.Name = "ValueOUT";
-            this.ValueOUT.ReadOnly = true;
-            this.ValueOUT.Width = 200;
-            // 
-            // NameOUT
-            // 
-            this.NameOUT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NameOUT.FillWeight = 50F;
-            this.NameOUT.HeaderText = "Наименование канала";
-            this.NameOUT.Name = "NameOUT";
-            this.NameOUT.ReadOnly = true;
-            // 
-            // Code
-            // 
-            this.Code.HeaderText = "Код";
-            this.Code.Name = "Code";
-            this.Code.ReadOnly = true;
-            this.Code.Width = 50;
-            // 
-            // CompName
-            // 
-            this.CompName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.CompName.HeaderText = "Наименование";
-            this.CompName.Name = "CompName";
-            this.CompName.ReadOnly = true;
-            // 
-            // Method
-            // 
-            this.Method.HeaderText = "Расчёт по";
-            this.Method.Name = "Method";
-            this.Method.ReadOnly = true;
-            this.Method.Width = 120;
-            // 
-            // Group
-            // 
-            this.Group.HeaderText = "Группа";
-            this.Group.Name = "Group";
-            this.Group.ReadOnly = true;
-            // 
-            // Sign
-            // 
-            this.Sign.HeaderText = "Знак";
-            this.Sign.Name = "Sign";
-            this.Sign.ReadOnly = true;
-            this.Sign.Width = 80;
             // 
             // formMain
             // 

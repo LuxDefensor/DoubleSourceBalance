@@ -71,5 +71,10 @@ namespace DoubleSourceBalance
                 return sql;
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("server={0}; database={1}; user={2}", server, database, user);
+        }
     }
 }

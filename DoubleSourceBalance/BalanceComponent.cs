@@ -20,6 +20,7 @@ namespace DoubleSourceBalance
     struct BalanceComponent
     {
         private string sign;
+        private string name;
         private BalanceSides side;
         private Source source;
         private string channel;
@@ -33,6 +34,7 @@ namespace DoubleSourceBalance
             this.source = source;
             this.channel = channel;
             this.method = method;
+            this.name = DataProvider.ChannelName(source, channel);
         }
 
         public CalculateMethods Method
@@ -79,8 +81,13 @@ namespace DoubleSourceBalance
         {
         get
             {
-                return DataProvider.ChannelName(source, channel);
+                return name;
             }
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 }
